@@ -596,6 +596,7 @@ elseif(PLATFORM STREQUAL "macos")
       SDL3_ttf
       freeimage
       hidapi
+      openxr_loader64
       winevbs
       "-framework AppKit"
    )
