@@ -228,7 +228,7 @@ if [ "${OPENXR_EXPECTED_SHA}" != "${OPENXR_FOUND_SHA}" ]; then
       -DOPENXR_DEBUG_POSTFIX="" \
       -B build
    cmake --build build --config ${BUILD_TYPE}
-   mv src/loader/libopenxr_loader64.dylib src/loader/openxr_loader64.dylib
+   mv build/src/loader/libopenxr_loader64.dylib build/src/loader/openxr_loader64.dylib
    cd ..
 
    echo "$OPENXR_EXPECTED_SHA" > cache.txt
