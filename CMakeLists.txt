@@ -327,6 +327,7 @@ if(PLATFORM STREQUAL "windows")
 
    if(RENDERER STREQUAL "BGFX")
       target_link_libraries(vpinball
+         $<IF:$<STREQUAL:${ARCH},arm64>,libopenxr_loader.dylib,libopenxr_loader>
          $<IF:$<STREQUAL:${ARCH},x64>,openxr_loader64.lib,openxr_loader.lib>
          $<IF:$<STREQUAL:${ARCH},x64>,bgfx64.lib,bgfx.lib>
          $<IF:$<STREQUAL:${ARCH},x64>,bimg64.lib,bimg.lib>
@@ -394,7 +395,7 @@ if(PLATFORM STREQUAL "windows")
       )
       if(RENDERER STREQUAL "BGFX")
          add_custom_command(TARGET vpinball POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy "${RUNTIME_LIBS_DIR}/$<IF:$<STREQUAL:${ARCH},x64>,openxr_loader64.dll,openxr_loader.dll>" "$<TARGET_FILE_DIR:vpinball>"
+            COMMAND "${CMAKE_COMMAND}" -E copy "${RUNTIME_LIBS_DIR}/$<IF:$<STREQUAL:${ARCH}armx64>,libopenxr_loader.dylib,libopenxr_loader.dylib>" "$<TARGET_FILE_DIR:vpinball>"
          )
       elseif(RENDERER STREQUAL "DX9")
          add_custom_command(TARGET vpinball POST_BUILD
@@ -596,6 +597,7 @@ elseif(PLATFORM STREQUAL "macos")
       SDL3_ttf
       freeimage
       hidapi
+      libopenxr_loader
       winevbs
       "-framework AppKit"
    )
