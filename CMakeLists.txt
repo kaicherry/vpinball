@@ -540,6 +540,7 @@ elseif(PLATFORM STREQUAL "macos")
    target_include_directories(vpinball PUBLIC
       ${CMAKE_SOURCE_DIR}/third-party/include
       ${CMAKE_SOURCE_DIR}
+      ${CMAKE_SOURCE_DIR}/third-party/openxr
       ${CMAKE_SOURCE_DIR}/third-party/include/libwinevbs/atl/include
       ${CMAKE_SOURCE_DIR}/third-party/include/libwinevbs/atlmfc/include
       ${CMAKE_SOURCE_DIR}/third-party/include/libwinevbs/wine/include
