@@ -12,6 +12,7 @@ echo "  FREEIMAGE_SHA: ${FREEIMAGE_SHA}"
 echo "  BGFX_CMAKE_VERSION: ${BGFX_CMAKE_VERSION}"
 echo "  BGFX_PATCH_SHA: ${BGFX_PATCH_SHA}"
 echo "  PINMAME_SHA: ${PINMAME_SHA}"
+echo "  OPENXR_SHA: ${OPENXR_SHA}"
 echo "  LIBDMDUTIL_SHA: ${LIBDMDUTIL_SHA}"
 echo "  LIBALTSOUND_SHA: ${LIBALTSOUND_SHA}"
 echo "  LIBDOF_SHA: ${LIBDOF_SHA}"
@@ -197,6 +198,39 @@ if [ "${PINMAME_EXPECTED_SHA}" != "${PINMAME_FOUND_SHA}" ]; then
    cd ..
 
    echo "$PINMAME_EXPECTED_SHA" > cache.txt
+
+   cd ..
+fi
+
+#
+# build openxr
+#
+
+OPENXR_EXPECTED_SHA="${OPENXR_SHA}"
+OPENXR_FOUND_SHA="$([ -f openxr/cache.txt ] && cat openxr/cache.txt || echo "")"
+
+if [ "${OPENXR_EXPECTED_SHA}" != "${OPENXR_FOUND_SHA}" ]; then
+   echo "Building OpenXR. Expected: ${OPENXR_EXPECTED_SHA}, Found: ${OPENXR_FOUND_SHA}"
+
+   rm -rf openxr
+   mkdir openxr
+   cd openxr
+
+   curl -sL https://github.com/KhronosGroup/OpenXR-SDK-Source/archive/${OPENXR_SHA}.tar.gz -o OpenXR-SDK-Source-${OPENXR_SHA}.tar.gz
+   tar xzf OpenXR-SDK-Source-${OPENXR_SHA}.tar.gz
+   mv OpenXR-SDK-Source-${OPENXR_SHA} openxr
+   cd openxr
+   sed -i.bak 's/set_target_properties(openxr_loader PROPERTIES FOLDER ${LOADER_FOLDER})/set_target_properties(openxr_loader PROPERTIES FOLDER ${LOADER_FOLDER} OUTPUT_NAME "openxr_loader64")/g' src/loader/CMakeLists.txt
+   sed -i.bak 's|\${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/openxr_loader|\${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/openxr_loader64|g' src/loader/CMakeLists.txt
+   cmake \
+      -DBUILD_TESTS=OFF \
+      -DDYNAMIC_LOADER=ON \
+      -DOPENXR_DEBUG_POSTFIX="" \
+      -B build
+   cmake --build build --config ${BUILD_TYPE}
+   cd ..
+
+   echo "$OPENXR_EXPECTED_SHA" > cache.txt
 
    cd ..
 fi
