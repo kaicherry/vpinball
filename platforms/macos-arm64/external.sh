@@ -220,15 +220,15 @@ if [ "${OPENXR_EXPECTED_SHA}" != "${OPENXR_FOUND_SHA}" ]; then
    tar xzf OpenXR-SDK-Source-${OPENXR_SHA}.tar.gz
    mv OpenXR-SDK-Source-${OPENXR_SHA} openxr
    cd openxr
-   sed -i.bak 's/set_target_properties(openxr_loader PROPERTIES FOLDER ${LOADER_FOLDER})/set_target_properties(openxr_loader PROPERTIES FOLDER ${LOADER_FOLDER} OUTPUT_NAME "openxr_loader64")/g' src/loader/CMakeLists.txt
-   sed -i.bak 's|\${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/openxr_loader|\${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/openxr_loader64|g' src/loader/CMakeLists.txt
+   sed -i.bak 's/set_target_properties(openxr_loader PROPERTIES FOLDER ${LOADER_FOLDER})/set_target_properties(openxr_loader PROPERTIES FOLDER ${LOADER_FOLDER} OUTPUT_NAME "libopenxr_loader64")/g' src/loader/CMakeLists.txt
+   sed -i.bak 's|\${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/openxr_loader|\${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/libopenxr_loader64|g' src/loader/CMakeLists.txt
    cmake \
       -DBUILD_TESTS=OFF \
       -DDYNAMIC_LOADER=ON \
       -DOPENXR_DEBUG_POSTFIX="" \
       -B build
    cmake --build build --config ${BUILD_TYPE}
-   mv build/src/loader/libopenxr_loader64.dylib build/src/loader/openxr_loader64.dylib
+   #mv build/src/loader/libopenxr_loader64.dylib build/src/loader/openxr_loader64.dylib
    cd ..
 
    echo "$OPENXR_EXPECTED_SHA" > cache.txt
@@ -467,8 +467,8 @@ cp -a pinmame/pinmame/build/libpinmame.{dylib,*.dylib} ../../../third-party/runt
 cp pinmame/pinmame/src/libpinmame/libpinmame.h ../../../third-party/include
 
 #libopenxr_loader64.dylib -> openxr_loader64.dylib should probably be done here...
-cp openxr/openxr/build/src/loader/openxr_loader64.dylib ../../../third-party/build-libs/macos-arm64
-cp openxr/openxr/build/src/loader/openxr_loader64.dylib ../../../third-party/runtime-libs/macos-arm64
+cp openxr/openxr/build/src/loader/libopenxr_loader64.dylib ../../../third-party/build-libs/macos-arm64/
+cp openxr/openxr/build/src/loader/libopenxr_loader64.dylib ../../../third-party/runtime-libs/macos-arm64/
 cp -r openxr/openxr/include/openxr ../../../third-party/include
 
 cp -a libdmdutil/libdmdutil/build/libdmdutil.{dylib,*.dylib} ../../../third-party/runtime-libs/macos-arm64
