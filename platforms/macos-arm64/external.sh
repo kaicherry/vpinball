@@ -466,6 +466,11 @@ cp -r bgfx/bgfx.cmake/bx/include/bx ../../../third-party/include/
 cp -a pinmame/pinmame/build/libpinmame.{dylib,*.dylib} ../../../third-party/runtime-libs/macos-arm64
 cp pinmame/pinmame/src/libpinmame/libpinmame.h ../../../third-party/include
 
+#libopenxr_loader64.dylib -> openxr_loader64.dylib should probably be done here...
+cp openxr/openxr/build/src/loader/${BUILD_TYPE}/openxr_loader64.dylib ../../../third-party/build-libs/macos-arm64
+cp openxr/openxr/build/src/loader/${BUILD_TYPE}/openxr_loader64.dylib ../../../third-party/runtime-libs/windows-x64
+cp -r openxr/openxr/include/openxr ../../../third-party/include
+
 cp -a libdmdutil/libdmdutil/build/libdmdutil.{dylib,*.dylib} ../../../third-party/runtime-libs/macos-arm64
 cp -r libdmdutil/libdmdutil/include/DMDUtil ../../../third-party/include/
 cp -a libdmdutil/libdmdutil/third-party/runtime-libs/macos/arm64/libzedmd.{dylib,*.dylib} ../../../third-party/runtime-libs/macos-arm64
